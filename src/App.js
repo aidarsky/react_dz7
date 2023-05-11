@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 
-function App() {
+function RegistrationForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <label htmlFor="firstName">Имя</label>
+        <input {...register("firstName", { required: true })} />
+        {errors.firstName && <span>Это поле обязательно для заполнения</span>}
+      </div>
+
+      <div>
+        <label htmlFor="lastName">Фамилия</label>
+        <input {...register("lastName", { required: true })} />
+        {errors.lastName && <span>Это поле обязательно для заполнения</span>}
+      </div>
+
+      <div>
+        <label htmlFor="gender">Пол</label>
+        <select {...register("gender", { required: true })}>
+          <option value="">Выберите пол</option>
+          <option value="male">Мужской</option>
+          <option value="female">Женский</option>
+          <option value="other">Другой</option>
+        </select>
+        {errors.gender && <span>Это поле обязательно для заполнения</span>}
+      </div>
+
+      <div>
+        <label htmlFor="birthYear">Год рождения</label>
+        <input {...register("birthYear", { required: true, pattern: /^\d{4}$/ })} />
+        {errors.birthYear && <span>Введите год рождения в формате "гггг"</span>}
+      </div>
+
+      <button type="submit">Зарегистрироваться</button>
+    </form>
   );
 }
 
-export default App;
+export default RegistrationForm;
